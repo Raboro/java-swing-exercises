@@ -2,11 +2,16 @@ package io.github.raboro.library;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Library extends JFrame {
 
     private final JPanel mainPanel;
     private JButton submitBookButton;
+
+    private final List<Book> books = new ArrayList<>();
     private final JTextField nameField = new JTextField();
     private final JTextField authorField = new JTextField();
     private final JTextField releaseDateField = new JTextField();
@@ -42,8 +47,23 @@ public class Library extends JFrame {
         panel.add(constructGridPanel());
         submitBookButton = new JButton("Submit Book");
         submitBookButton.setPreferredSize(new Dimension(300, 20));
+        submitBookButton.addActionListener(e -> {
+            final String name = nameField.getText();
+            final String author = authorField.getText();
+            final String releaseDate = releaseDateField.getText();
+            if (isValidBook(name, author, releaseDate)) {
+                books.add(new Book(name, author, releaseDate));
+            }
+        });
         panel.add(submitBookButton);
         return panel;
+    }
+
+    private boolean isValidBook(String name, String author, String releaseDate) {
+        final boolean validName = name != null && !"".equals(name) && !" ".equals(name);
+        final boolean validAuthor = author != null && !"".equals(author) && !" ".equals(author);
+        final boolean validReleaseDate = releaseDate != null && !"".equals(releaseDate) && !" ".equals(releaseDate);
+        return validName && validAuthor && validReleaseDate;
     }
 
     private Component constructGridPanel() {
