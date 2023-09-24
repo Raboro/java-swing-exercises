@@ -2,6 +2,7 @@ package io.github.raboro.library;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,10 +81,41 @@ public class Library extends JFrame {
 
     private Component constructFileInteraction() {
         final JPanel panel = new JPanel();
-        saveToFileButton =  new JButton("Save to File");
+        saveToFileButton = new JButton("Save to File");
         panel.add(saveToFileButton);
         loadFromFileButton = new JButton("Load from File");
         panel.add(loadFromFileButton);
+        addActionListenerToButtons();
         return panel;
+    }
+
+    private void addActionListenerToButtons() {
+        saveToFileButton.addActionListener(e -> {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\java\\io\\github\\raboro\\library\\books.txt"))) {
+                books.forEach(book -> {
+                    try {
+                        writer.write(book.toString());
+                        writer.newLine();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                });
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        loadFromFileButton.addActionListener(e -> {
+            try (BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\io\\github\\raboro\\library\\books.txt"))) {
+                books.clear();
+                reader.lines().forEach(line -> books.add(parseLine(line)));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
+    private Book parseLine(String line) {
+        String[] split = line.split(" - ");
+        return new Book(split[0], split[1], split[2]);
     }
 }
