@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Library extends JFrame {
+public class Library extends JFrame implements Runnable {
 
     public static final String FILE_PATH = "src\\main\\java\\io\\github\\raboro\\library\\books.txt";
     private final JPanel mainPanel;
@@ -18,6 +18,8 @@ public class Library extends JFrame {
     private JButton saveToFileButton;
     private JButton loadFromFileButton;
 
+    private JLabel currentBooks = new JLabel();
+
     Library() {
         super("Library");
         setLookAndFeel();
@@ -28,6 +30,9 @@ public class Library extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     private void setLookAndFeel() {
@@ -42,6 +47,7 @@ public class Library extends JFrame {
     private Component constructMain() {
         mainPanel.add(constructAddBook());
         mainPanel.add(constructFileInteraction());
+        mainPanel.add(currentBooks);
         return mainPanel;
     }
 
@@ -120,5 +126,16 @@ public class Library extends JFrame {
     private void parseLine(String line) {
         String[] split = line.split(" - ");
         books.add(new Book(split[0], split[1], split[2]));
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            long l = System.currentTimeMillis();
+            while ((System.currentTimeMillis() - l) < 500) {
+            }
+            currentBooks.setText("Number of books: ".concat(String.valueOf(books.size())));
+            currentBooks.setAlignmentX(500);
+        }
     }
 }
