@@ -56,6 +56,8 @@ public class Library extends JFrame {
             final String releaseDate = releaseDateField.getText();
             if (isValidBook(name, author, releaseDate)) {
                 books.add(new Book(name, author, releaseDate));
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid Book input", "Invalid", JOptionPane.ERROR_MESSAGE);
             }
         });
         panel.add(submitBookButton);
