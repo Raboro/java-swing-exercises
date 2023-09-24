@@ -54,6 +54,6 @@ public class Library extends JFrame {
         gridPanel.add(authorField);
         gridPanel.add(new JLabel("Release Date"));
         gridPanel.add(releaseDateField);
-        return  gridPanel;
+        return gridPanel;
     }
 }
