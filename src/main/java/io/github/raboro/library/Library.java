@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Library extends JFrame {
 
+    public static final String FILE_PATH = "src\\main\\java\\io\\github\\raboro\\library\\books.txt";
     private final JPanel mainPanel;
     private JButton submitBookButton;
     private final List<Book> books = new ArrayList<>();
@@ -91,7 +92,7 @@ public class Library extends JFrame {
 
     private void addActionListenerToButtons() {
         saveToFileButton.addActionListener(e -> {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\java\\io\\github\\raboro\\library\\books.txt"))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
                 books.forEach(book -> {
                     try {
                         writer.write(book.toString());
@@ -105,17 +106,17 @@ public class Library extends JFrame {
             }
         });
         loadFromFileButton.addActionListener(e -> {
-            try (BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\io\\github\\raboro\\library\\books.txt"))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
                 books.clear();
-                reader.lines().forEach(line -> books.add(parseLine(line)));
+                reader.lines().forEach(this::parseLine);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
     }
 
-    private Book parseLine(String line) {
+    private void parseLine(String line) {
         String[] split = line.split(" - ");
-        return new Book(split[0], split[1], split[2]);
+        books.add(new Book(split[0], split[1], split[2]));
     }
 }
