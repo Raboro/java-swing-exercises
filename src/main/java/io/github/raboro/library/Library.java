@@ -3,23 +3,24 @@ package io.github.raboro.library;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Library extends JFrame {
 
     private final JPanel mainPanel;
     private JButton submitBookButton;
-
     private final List<Book> books = new ArrayList<>();
     private final JTextField nameField = new JTextField();
     private final JTextField authorField = new JTextField();
     private final JTextField releaseDateField = new JTextField();
+    private JButton saveToFileButton;
+    private JButton loadFromFileButton;
 
     Library() {
         super("Library");
         setLookAndFeel();
-        mainPanel = new JPanel(new FlowLayout());
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         this.add(constructMain());
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
@@ -38,6 +39,7 @@ public class Library extends JFrame {
 
     private Component constructMain() {
         mainPanel.add(constructAddBook());
+        mainPanel.add(constructFileInteraction());
         return mainPanel;
     }
 
@@ -46,7 +48,6 @@ public class Library extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(constructGridPanel());
         submitBookButton = new JButton("Submit Book");
-        submitBookButton.setPreferredSize(new Dimension(300, 20));
         submitBookButton.addActionListener(e -> {
             final String name = nameField.getText();
             final String author = authorField.getText();
@@ -75,5 +76,14 @@ public class Library extends JFrame {
         gridPanel.add(new JLabel("Release Date"));
         gridPanel.add(releaseDateField);
         return gridPanel;
+    }
+
+    private Component constructFileInteraction() {
+        final JPanel panel = new JPanel();
+        saveToFileButton =  new JButton("Save to File");
+        panel.add(saveToFileButton);
+        loadFromFileButton = new JButton("Load from File");
+        panel.add(loadFromFileButton);
+        return panel;
     }
 }
