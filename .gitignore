@@ -1,3 +1,4 @@
 .idea
 target
 src/main/java/io/github/raboro/slf/
+src/main/java/io/github/raboro/snatchat/
